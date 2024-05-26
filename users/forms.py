@@ -150,3 +150,9 @@ class ProfileForm(UserChangeForm):
     #         }
     #     ),
     # )
+
+
+class UserModelForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"

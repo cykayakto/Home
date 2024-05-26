@@ -1,0 +1,5 @@
+<a href="{% url 'users:user_create' %}">Create</a>
+
+{% for user in users %}
+<p>{{user.username}}:  <a href="{% url 'users:user_edit' user.id %}">edit</a> | <a href="{% url 'users:user_delete' user.id %}">delete</a></p>
+{% endfor %}

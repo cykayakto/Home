@@ -6,8 +6,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from carts.models import Cart
 from orders.models import Order, OrderItem
+from .models import User
 
-from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
+from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm, UserModelForm
 
 
 def login(request):
@@ -101,3 +102,42 @@ def logout(request):
     messages.success(request, f"{request.user.username}, Вы вышли из аккаунта")
     auth.logout(request)
     return redirect(reverse('main:index'))
+
+
+
+
+
+
+def user_create(request):
+    form = UserModelForm(request.POST)
+    users = User.objects.all()
+
+
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/user_create.html', {"users": users, "form": form})
+
+
+def main_user(request):
+    users = User.objects.all()
+    return render(request, 'admin_panel/main_user.html', {"users": users})
+
+
+def user_delete(request, id):
+    instance = User.objects.get(id=id)
+    instance.delete()
+    return redirect("/user/user_main/")
+
+
+def user_edit(request, id):
+    instance = User.objects.get(id=id)
+    users = User.objects.all()
+
+    if request.method == 'POST':
+        form = UserModelForm((request.POST or None), instance=instance)
+        if form.is_valid():
+            instance.save()
+            return redirect("/user/user_main")
+
+    return render(request, 'admin_panel/user_create.html', {"users": users, "user": instance})
