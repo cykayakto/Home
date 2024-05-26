@@ -1,0 +1,5 @@
+<a href="{% url 'goods:product_create' %}">Create</a>
+
+{% for product in products %}
+<p>{{product.name}}:  <a href="{% url 'goods:product_edit' product.id %}">edit</a> | <a href="{% url 'goods:product_delete' product.id %}">delete</a></p>
+{% endfor %}

@@ -1,0 +1,4 @@
+<a href="{% url 'cart:cart_create' %}">Create</a>
+{% for cart in carts %}
+<p>{{cart.product}}:  <a href="{% url 'cart:cart_edit' cart.id %}">edit</a> | <a href="{% url 'cart:cart_delete' cart.id %}">delete</a></p>
+{% endfor %}

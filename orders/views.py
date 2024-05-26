@@ -8,7 +8,13 @@ from carts.models import Cart
 
 from orders.forms import CreateOrderForm
 from orders.models import Order, OrderItem
+from .forms import OrderItemModelForm, OrderModelForm
+from goods.models import Products
 
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 @login_required
 def create_order(request):
@@ -73,3 +79,79 @@ def create_order(request):
         'orders': True,
     }
     return render(request, 'orders/create_order.html', context=context)
+
+
+
+
+def order_item_create(request):
+    form = OrderItemModelForm(request.POST)
+    orders = Order.objects.all()
+    products = Products.objects.all()
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/order_item_create.html', {"products": products, "orders": orders})
+
+
+def main_order_item(request):
+    order_items = OrderItem.objects.all()
+    return render(request, 'admin_panel/main_order_item.html', {"order_items": order_items})
+
+
+def order_item_delete(request, id):
+    instance = OrderItem.objects.get(id=id)
+    instance.delete()
+    return redirect("/orders/order_item_main/")
+
+
+def order_item_edit(request, id):
+    instance = OrderItem.objects.get(id=id)
+    orders = Order.objects.all()
+    products = Products.objects.all()
+
+    if request.method == 'POST':
+        form = OrderItemModelForm((request.POST or None), instance=instance)
+        if form.is_valid():
+            instance.save()
+            return redirect("/orders/order_item_main")
+
+    return render(request, 'admin_panel/order_item_create.html', {"order_item": instance, "products": products, "orders": orders})
+
+
+
+
+
+
+
+def order_create(request):
+    form = OrderModelForm(request.POST)
+    users = User.objects.all()
+
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/order_create.html', {"users": users, "form": form})
+
+
+def main_order(request):
+    orders = Order.objects.all()
+    return render(request, 'admin_panel/main_order.html', {"orders": orders})
+
+
+def order_delete(request, id):
+    instance = Order.objects.get(id=id)
+    instance.delete()
+    return redirect("/orders/order_main/")
+
+
+def order_edit(request, id):
+    instance = Order.objects.get(id=id)
+    users = User.objects.all()
+
+    if request.method == 'POST':
+        form = OrderModelForm((request.POST or None), instance=instance)
+        if form.is_valid():
+            instance.save()
+            return redirect("/orders/order_main")
+
+    return render(request, 'admin_panel/order_create.html', {"users": users, "order": instance})

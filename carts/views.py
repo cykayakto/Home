@@ -5,6 +5,11 @@ from carts.models import Cart
 from carts.utils import get_user_carts
 
 from goods.models import Products
+from .forms import CartModelForm
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 def cart_add(request):
@@ -92,3 +97,36 @@ def cart_remove(request):
     }
 
     return JsonResponse(response_data)
+
+
+def cart_create(request):
+    form = CartModelForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/cart_create.html')
+
+
+def main_cart(request):
+    carts = Cart.objects.all()
+    return render(request, 'admin_panel/main_cart.html', {"carts": carts})
+
+
+def cart_delete(request, id):
+    instance = Cart.objects.get(id=id)
+    instance.delete()
+    return redirect("/cart/cart_main/")
+
+
+def cart_edit(request, id):
+    instance = Cart.objects.get(id=id)
+    goods = Products.objects.all()
+    users = User.objects.all()
+    if request.method == 'POST':
+        form = CartModelForm((request.POST or None), instance=instance)
+        if form.is_valid():
+            print(form.cleaned_data)
+            instance.save()
+            return redirect("/cart/cart_main")
+
+    return render(request, 'admin_panel/cart_create.html', {"cart": instance, "goods": goods, "users": users})

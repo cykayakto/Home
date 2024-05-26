@@ -1,5 +1,6 @@
 import re
 from django import forms
+from .models import Order, OrderItem
 
 
 class CreateOrderForm(forms.Form):
@@ -32,6 +33,18 @@ class CreateOrderForm(forms.Form):
             raise forms.ValidationError("Неверный формат номера")
 
         return data
+
+
+class OrderModelForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = "__all__"
+
+
+class OrderItemModelForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = "__all__"
 
 
 

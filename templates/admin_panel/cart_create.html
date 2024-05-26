@@ -1,0 +1,57 @@
+
+<form method="post">
+{% csrf_token %}
+<p>
+    <label for="id_user">Пользователь:</label>
+    <select name="user" id="id_user" value="{{cart.user.id}}">
+  <option value="" selected="">---------</option>
+
+  {% for user in users %}
+  {% if user.id == cart.user.id %}
+  <option value="{{user.id}}" selected>{{user.username}}</option>
+  {% else %}
+  <option value="{{user.id}}">{{user.username}}</option>
+  {% endif %}
+  {% endfor %}
+
+</select>
+    
+    
+  </p>
+
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_product">Товар:</label>
+    <select name="product" required="" id="id_product">
+
+  <option value="" selected="">---------</option>
+
+  {% for good in goods %}
+  {% if good.id == cart.product.id %}
+  <option value="{{good.id}}" selected>{{good.name}}</option>
+  {% else %}
+  <option value="{{good.id}}">{{good.name}}</option>
+  {% endif %}
+  {% endfor %}
+
+</select>
+    
+    
+  </p>
+
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_quantity">Количество:</label>
+    <input type="number" name="quantity" min="0" required="" id="id_quantity" value="{{cart.quantity}}">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_session_key">Session key:</label>
+    <input type="text" name="session_key" maxlength="32" id="id_session_key" value="{{cart.session_key}}">
+    
+  </p>
+<button type="submit" class="button">send</button>
+</form>

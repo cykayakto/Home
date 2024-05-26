@@ -1,0 +1,13 @@
+<form method="POST">
+{% csrf_token %}
+<ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_name">Название:</label>
+    <input type="text" name="name" maxlength="150" required="" id="id_name" value="{{category.name}}">
+  </p>
+  <p>
+    <label for="id_slug">URL:</label>
+    <input type="text" name="slug" maxlength="200" id="id_slug" value="{{category.slug}}">
+  </p>
+<button type="submit" class="button">send</button>
+</form>

@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator
-from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 
-from goods.models import Products
+from goods.models import Products, Categories
 from goods.utils import q_search
+from .forms import ProductModelForm, CategoryModelForm
 
 
 def catalog(request, category_slug=None):
@@ -42,3 +43,79 @@ def product(request, product_slug):
     context = {"product": product}
 
     return render(request, "goods/product.html", context=context)
+
+
+
+
+
+
+
+def product_create(request):
+    form = ProductModelForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/product_create.html')
+
+
+def main_product(request):
+    products = Products.objects.all()
+    return render(request, 'admin_panel/main_product.html', {"products": products})
+
+
+def product_delete(request, id):
+    instance = Products.objects.get(id=id)
+    instance.delete()
+    return redirect("/catalog/product_main/")
+
+
+def product_edit(request, id):
+    instance = Products.objects.get(id=id)
+    categories = Categories.objects.all()
+
+    if request.method == 'POST':
+        form = ProductModelForm((request.POST or None), instance=instance)
+        print(form, form.is_valid())
+        if form.is_valid():
+            instance.save()
+            return redirect("/catalog/product_main")
+
+    return render(request, 'admin_panel/product_create.html', {"product": instance, "categories": categories})
+
+
+
+
+
+
+
+
+def category_create(request):
+    form = CategoryModelForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect("/admin_panel")
+    return render(request, 'admin_panel/category_create.html', {"form": form})
+
+
+def main_category(request):
+    categories = Categories.objects.all()
+    return render(request, 'admin_panel/main_category.html', {"categories": categories})
+
+
+def category_delete(request, id):
+    instance = Categories.objects.get(id=id)
+    instance.delete()
+    return redirect("/catalog/category_main/")
+
+
+def category_edit(request, id):
+    instance = Categories.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = CategoryModelForm((request.POST or None), instance=instance)
+        print(form, form.is_valid())
+        if form.is_valid():
+            instance.save()
+            return redirect("/catalog/category_main")
+
+    return render(request, 'admin_panel/category_create.html', {"category": instance})

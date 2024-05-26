@@ -1,0 +1,5 @@
+<a href="{% url 'goods:category_create' %}">Create</a>
+
+{% for category in categories %}
+<p>{{category.name}}:  <a href="{% url 'goods:category_edit' category.id %}">edit</a> | <a href="{% url 'goods:category_delete' category.id %}">delete</a></p>
+{% endfor %}

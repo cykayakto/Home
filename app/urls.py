@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.conf.urls.static import static
 
 from app import settings
+from admin_panel import views
 
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('user/', include('users.urls', namespace='user')),
     path('cart/', include('carts.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path("admin_panel", views.index)
 ]
 
 if settings.DEBUG:

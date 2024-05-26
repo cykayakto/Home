@@ -1,0 +1,5 @@
+<a href="{% url 'orders:order_item_create' %}">Create</a>
+
+{% for order in order_items %}
+<p>{{order.name}}:  <a href="{% url 'orders:order_item_edit' order.id %}">edit</a> | <a href="{% url 'orders:order_item_delete' order.id %}">delete</a></p>
+{% endfor %}

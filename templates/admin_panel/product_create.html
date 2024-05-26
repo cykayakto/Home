@@ -1,0 +1,54 @@
+<form method="POST">
+{% csrf_token %}
+<ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_name">Название:</label>
+    <input type="text" name="name" maxlength="150" required="" id="id_name" value="{{product.name}}">
+    
+  </p>
+  <p>
+    <label for="id_slug">URL:</label>
+    <input type="text" name="slug" maxlength="200" id="id_slug" value="{{product.slug}}">
+  </p>
+  <p>
+    <label for="id_description">Описание:</label>
+    <textarea name="description" cols="40" rows="10" id="id_description">{{product.description}}</textarea>
+  </p>
+  <p>
+    <label for="id_image">Изображение:</label>
+    <input type="file" name="image" accept="image/*" id="id_image" value="{{product.image}}">
+  </p>
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_price">Цена:</label>
+    <input type="number" name="price" step="0.01" required="" id="id_price" value="{{product.price}}">
+  </p>
+
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_discount">Скидка в %:</label>
+    <input type="number" name="discount" step="0.01" required="" id="id_discount" value="{{product.discount}}">
+  </p>
+
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_quantity">Количество:</label>
+    <input type="number" name="quantity" min="0" required="" id="id_quantity" value="{{product.quantity}}">
+  </p>
+  <ul class="errorlist"><li>Обязательное поле.</li></ul>
+  <p>
+    <label for="id_category">Категория:</label>
+    <select name="category" required="" id="id_category">
+  <option value="" selected="">---------</option>
+  {% for categ in categories %}
+  {% if categ.id == product.category.id %}
+  <option value="{{categ.id}}" selected>{{categ.name}}</option>
+  {% else %}
+  <option value="{{categ.id}}">{{categ.name}}</option>
+  {% endif %}
+  {% endfor %}
+</select>
+<button type="submit" class="button">send</button>
+    
+  </p>
+</form>

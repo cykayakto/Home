@@ -1,0 +1,45 @@
+<form method="POST">
+{% csrf_token %}
+<p>
+    <label for="id_user">Пользователь:</label>
+    <select name="user" id="id_user">
+  <option value="" selected="">---------</option>
+  {% for user in users %}
+  {% if user.id == order.user.id %}
+  <option value="{{user.id}}" selected>{{user.username}}</option>
+  {% else %}
+  <option value="{{user.id}}">{{user.username}}</option>
+  {% endif %}
+  {% endfor %}
+</select>
+  </p>
+
+  <ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_phone_number">Номер телефона:</label>
+    <input type="text" name="phone_number" maxlength="20" required="" id="id_phone_number" value="{{order.phone_number}}">
+  </p>
+  <p>
+    <label for="id_requires_delivery">Требуется доставка:</label>
+    <input type="checkbox" name="requires_delivery" id="id_requires_delivery" value="{{order.requires_delivery}}">
+  </p>
+  <p>
+    <label for="id_delivery_address">Адрес доставки:</label>
+    <textarea name="delivery_address" cols="40" rows="10" id="id_delivery_address">{{order.delivery_address}}</textarea>
+  </p>
+  <p>
+    <label for="id_payment_on_get">Оплата при получении:</label>
+    <input type="checkbox" name="payment_on_get" id="id_payment_on_get" value="{{order.payment_on_get}}">
+  </p>
+  <p>
+    <label for="id_is_paid">Оплачено:</label>
+    <input type="checkbox" name="is_paid" id="id_is_paid" value="{{order.is_paid}}">
+  </p>
+
+  <ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_status">Статус заказа:</label>
+    <input type="text" name="status" maxlength="50" required="" id="id_status" value="{{order.status}}">
+  </p>
+<button type="submit" class="button">send</button>
+</form>
