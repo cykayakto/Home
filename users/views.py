@@ -9,7 +9,7 @@ from orders.models import Order, OrderItem
 from .models import User
 
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm, UserModelForm
-
+from django.utils.timezone import now
 
 def login(request):
     if request.method == 'POST':
@@ -111,12 +111,14 @@ def logout(request):
 def user_create(request):
     form = UserModelForm(request.POST)
     users = User.objects.all()
+    date = str(now())
+    print(form.errors)
 
 
     if form.is_valid():
         form.save()
         return redirect("/admin_panel")
-    return render(request, 'admin_panel/user_create.html', {"users": users, "form": form})
+    return render(request, 'admin_panel/user_create.html', {"date": date, "form": form})
 
 
 def main_user(request):
@@ -133,11 +135,16 @@ def user_delete(request, id):
 def user_edit(request, id):
     instance = User.objects.get(id=id)
     users = User.objects.all()
+    date = str(instance.date_joined)
+    print(date)
+
 
     if request.method == 'POST':
         form = UserModelForm((request.POST or None), instance=instance)
+        print(form.is_valid())
+        print(form.errors)
         if form.is_valid():
             instance.save()
             return redirect("/user/user_main")
 
-    return render(request, 'admin_panel/user_create.html', {"users": users, "user": instance})
+    return render(request, 'admin_panel/user_create.html', {"date": date, "current_user": instance})

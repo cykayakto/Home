@@ -101,10 +101,12 @@ def cart_remove(request):
 
 def cart_create(request):
     form = CartModelForm(request.POST)
+    goods = Products.objects.all()
+    users = User.objects.all()
     if form.is_valid():
         form.save()
         return redirect("/admin_panel")
-    return render(request, 'admin_panel/cart_create.html')
+    return render(request, 'admin_panel/cart_create.html', {"goods": goods, "users": users})
 
 
 def main_cart(request):
