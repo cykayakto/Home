@@ -150,3 +150,12 @@ class ProfileForm(UserChangeForm):
     #         }
     #     ),
     # )
+
+
+class UserModelForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
+        widgets = {
+            'date_joined': forms.DateInput(format = "%d/%m/%y %H:%M:%S"),
+        }

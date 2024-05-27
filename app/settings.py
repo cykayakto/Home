@@ -145,6 +145,8 @@ MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
+DATETIME_FORMAT="%d/%m/%y %H:%M:%S"
+
 
 INTERNAL_IPS = [
     # ...

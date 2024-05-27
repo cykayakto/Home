@@ -52,10 +52,11 @@ def product(request, product_slug):
 
 def product_create(request):
     form = ProductModelForm(request.POST)
+    categories = Categories.objects.all()
     if form.is_valid():
         form.save()
         return redirect("/admin_panel")
-    return render(request, 'admin_panel/product_create.html')
+    return render(request, 'admin_panel/product_create.html', {"categories": categories})
 
 
 def main_product(request):

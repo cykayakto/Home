@@ -1,0 +1,96 @@
+<form method="POST">
+
+{% csrf_token %}
+<ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_password">Password:</label>
+    <input type="text" name="password" maxlength="128" required="" id="id_password" value="{{current_user.password}}">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_is_superuser">Superuser status:</label>
+    <input type="checkbox" name="is_superuser" id="id_is_superuser" value="{{current_user.is_superuser}}">
+    
+      <span class="helptext">Designates that this user has all permissions without explicitly assigning them.</span>
+    
+    
+  </p>
+
+  
+  <p>
+    
+      <span class="helptext">The groups this user belongs to. A user will get all permissions granted to each of their groups.</span>
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_user_permissions">User permissions:</label>
+
+    
+      <span class="helptext">Specific permissions for this current_user.</span>
+    
+    
+  </p>
+
+  <ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_username">Username:</label>
+    <input type="text" name="username" maxlength="150" required="" id="id_username" value="{{current_user.username}}">
+    
+      <span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+    
+    
+  </p>
+
+
+  
+  <p>
+    <label for="id_email">Email address:</label>
+    <input type="email" name="email" maxlength="254" id="id_email" value="{{current_user.email}}">
+    
+    
+  </p>
+
+
+  
+  <p>
+    <label for="id_is_active">Active:</label>
+    <input type="checkbox" name="is_active" id="id_is_active" value="{{current_user.is_active}}">
+    
+      <span class="helptext">Designates whether this user should be treated as active. Unselect this instead of deleting accounts.</span>
+    
+    
+  </p>
+
+  <ul class="errorlist"><li>This field is required.</li></ul>
+  <p>
+    <label for="id_date_joined">Date joined:</label>
+    <input type="text" name="date_joined" required="" id="id_date_joined" value="{{date}}">
+    <input type="hidden" name="initial-date_joined" id="initial-id_date_joined" value="{{date}}">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_image">Аватар: current: {% if current_user.image %}<a href="{{current_user.image.url}}">current</a>{% endif %}</label><br>
+    <input type="file" name="image" accept="image/*" id="id_image" value="">
+
+  </p>
+
+  
+  <p>
+    <label for="id_phone_number">Phone number:</label>
+    <input type="text" name="phone_number" maxlength="10" id="id_phone_number" value="{{current_user.phone_number}}">
+    
+    
+      
+    
+  </p>
+<button type="submit" class="button">send</button>
+</form>
