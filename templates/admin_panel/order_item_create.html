@@ -1,53 +1,103 @@
-<form method="POST">
-{% csrf_token %}
-<ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_order">Заказ:</label>
-    <select name="order" required="" id="id_order">
-  <option value="" selected="">---------</option>
-  {% for orders in orders %}
-  {% if orders.id == order_item.order.id %}
-  <option value="{{orders.id}}" selected>{{orders.user}} - {{orders.created_timestamp}}</option>
-  {% else %}
-  <option value="{{orders.id}}">{{orders.user}} - {{orders.created_timestamp}}</option>
-  {% endif %}
-  {% endfor %}
-</select>
-  </p>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin Form</title>
+	<!-- Подключение Bootstrap CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+		.container {
+			background-color: white;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			max-width: 600px;
+			margin: 50px auto;
+		}
+		.form-group label {
+			font-weight: bold;
+		}
+		.errorlist {
+			color: red;
+			list-style-type: none;
+			padding-left: 0;
+		}
+		.btn-custom {
+			background-color: #343a40;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2 class="text-center mb-4">Order item</h2>
+		<form method="POST">
+			{% csrf_token %}
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_order">Заказ:</label>
+				<select name="order" required="" id="id_order" class="form-control">
+					<option value="" selected="">---------</option>
+					{% for orders in orders %}
+					{% if orders.id == order_item.order.id %}
+					<option value="{{orders.id}}" selected>{{orders.user}} - {{orders.created_timestamp}}</option>
+					{% else %}
+					<option value="{{orders.id}}">{{orders.user}} - {{orders.created_timestamp}}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_product">Продукт:</label>
+				<select name="product" required="" id="id_product" class="form-control">
+					<option value="" selected="">---------</option>
+					{% for product in products %}
+					{% if product.id == order_item.product.id %}
+					<option value="{{product.id}}" selected>{{product.name}}</option>
+					{% else %}
+					<option value="{{product.id}}">{{product.name}}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_name">Название:</label>
+				<input type="text" name="name" maxlength="150" required="" id="id_name" class="form-control" value="{{order_item.name}}">
+			</div>
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_price">Цена:</label>
+				<input type="number" name="price" step="0.01" required="" id="id_price" class="form-control" value="{{order_item.price}}">
+			</div>
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_quantity">Количество:</label>
+				<input type="number" name="quantity" min="0" required="" id="id_quantity" class="form-control" value="{{order_item.quantity}}">
+			</div>
+			
+			<button type="submit" class="btn btn-custom btn-block">Отправить</button>
+		</form>
+	</div>
 
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_product">Продукт:</label>
-    <select name="product" required="" id="id_product">
-  <option value="" selected="">---------</option>
-  {% for product in products %}
-  {% if product.id == order_item.product.id %}
-  <option value="{{product.id}}" selected>{{product.name}}</option>
-  {% else %}
-  <option value="{{product.id}}">{{product.name}}</option>
-  {% endif %}
-  {% endfor %}
-
-</select>
-  </p>
-
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_name">Название:</label>
-    <input type="text" name="name" maxlength="150" required="" id="id_name" value="{{order_item.name}}">
-  </p>
-
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_price">Цена:</label>
-    <input type="number" name="price" step="0.01" required="" id="id_price" value="{{order_item.price}}">
-  </p>
-
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_quantity">Количество:</label>
-    <input type="number" name="quantity" min="0" required="" id="id_quantity" value="{{order_item.quantity}}">
-  </p>
- 
-<button type="submit" class="button">send</button>
-</form>
+	<!-- Подключение Bootstrap JS и зависимостей -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,96 +1,106 @@
-<form method="POST">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin Form</title>
+	<!-- Подключение Bootstrap CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+		.container {
+			background-color: white;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			max-width: 600px;
+			margin: 50px auto;
+		}
+		.form-group label {
+			font-weight: bold;
+		}
+		.errorlist {
+			color: red;
+			list-style-type: none;
+			padding-left: 0;
+		}
+		.btn-custom {
+			background-color: #343a40;
+			color: white;
+		}
+		.helptext {
+			display: block;
+			margin-top: 5px;
+			color: #6c757d;
+			font-size: 0.875em;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2 class="text-center mb-4">User</h2>
+		<form method="POST">
+			{% csrf_token %}
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_password">Password:</label>
+				<input type="text" name="password" maxlength="128" required="" id="id_password" class="form-control" value="{{current_user.password}}">
+			</div>
+			
+			<div class="form-group form-check">
+				<input type="checkbox" name="is_superuser" class="form-check-input" id="id_is_superuser" value="{{current_user.is_superuser}}">
+				<label class="form-check-label" for="id_is_superuser">Superuser status:</label>
+				<span class="helptext">Designates that this user has all permissions without explicitly assigning them.</span>
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_username">Username:</label>
+				<input type="text" name="username" maxlength="150" required="" id="id_username" class="form-control" value="{{current_user.username}}">
+				<span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+			</div>
+			
+			<div class="form-group">
+				<label for="id_email">Email address:</label>
+				<input type="email" name="email" maxlength="254" id="id_email" class="form-control" value="{{current_user.email}}">
+			</div>
+			
+			<div class="form-group form-check">
+				<input type="checkbox" name="is_active" class="form-check-input" id="id_is_active" value="{{current_user.is_active}}">
+				<label class="form-check-label" for="id_is_active">Active:</label>
+				<span class="helptext">Designates whether this user should be treated as active. Unselect this instead of deleting accounts.</span>
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_date_joined">Date joined:</label>
+				<input type="text" name="date_joined" required="" id="id_date_joined" class="form-control" value="{{date}}">
+				<input type="hidden" name="initial-date_joined" id="initial-id_date_joined" value="{{date}}">
+			</div>
+			
+			<div class="form-group">
+				<label for="id_image">Аватар: current: {% if current_user.image %}<a href="{{current_user.image.url}}">current</a>{% endif %}</label><br>
+				<input type="file" name="image" accept="image/*" id="id_image" class="form-control">
+			</div>
+			
+			<div class="form-group">
+				<label for="id_phone_number">Phone number:</label>
+				<input type="text" name="phone_number" maxlength="10" id="id_phone_number" class="form-control" value="{{current_user.phone_number}}">
+			</div>
+			
+			<button type="submit" class="btn btn-custom btn-block">Отправить</button>
+		</form>
+	</div>
 
-{% csrf_token %}
-<ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_password">Password:</label>
-    <input type="text" name="password" maxlength="128" required="" id="id_password" value="{{current_user.password}}">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_is_superuser">Superuser status:</label>
-    <input type="checkbox" name="is_superuser" id="id_is_superuser" value="{{current_user.is_superuser}}">
-    
-      <span class="helptext">Designates that this user has all permissions without explicitly assigning them.</span>
-    
-    
-  </p>
-
-  
-  <p>
-    
-      <span class="helptext">The groups this user belongs to. A user will get all permissions granted to each of their groups.</span>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_user_permissions">User permissions:</label>
-
-    
-      <span class="helptext">Specific permissions for this current_user.</span>
-    
-    
-  </p>
-
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_username">Username:</label>
-    <input type="text" name="username" maxlength="150" required="" id="id_username" value="{{current_user.username}}">
-    
-      <span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
-    
-    
-  </p>
-
-
-  
-  <p>
-    <label for="id_email">Email address:</label>
-    <input type="email" name="email" maxlength="254" id="id_email" value="{{current_user.email}}">
-    
-    
-  </p>
-
-
-  
-  <p>
-    <label for="id_is_active">Active:</label>
-    <input type="checkbox" name="is_active" id="id_is_active" value="{{current_user.is_active}}">
-    
-      <span class="helptext">Designates whether this user should be treated as active. Unselect this instead of deleting accounts.</span>
-    
-    
-  </p>
-
-  <ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_date_joined">Date joined:</label>
-    <input type="text" name="date_joined" required="" id="id_date_joined" value="{{date}}">
-    <input type="hidden" name="initial-date_joined" id="initial-id_date_joined" value="{{date}}">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_image">Аватар: current: {% if current_user.image %}<a href="{{current_user.image.url}}">current</a>{% endif %}</label><br>
-    <input type="file" name="image" accept="image/*" id="id_image" value="">
-
-  </p>
-
-  
-  <p>
-    <label for="id_phone_number">Phone number:</label>
-    <input type="text" name="phone_number" maxlength="10" id="id_phone_number" value="{{current_user.phone_number}}">
-    
-    
-      
-    
-  </p>
-<button type="submit" class="button">send</button>
-</form>
+	<!-- Подключение Bootstrap JS и зависимостей -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

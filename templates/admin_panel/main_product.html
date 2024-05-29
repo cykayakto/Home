@@ -1,5 +1,63 @@
-<a href="{% url 'goods:product_create' %}">Create</a>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Product Management</title>
+	<!-- Подключение Bootstrap CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+		.container {
+			background-color: white;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			max-width: 800px;
+			margin: 50px auto;
+		}
+		.card-header {
+			background-color: #343a40;
+			color: white;
+		}
+		.card-body {
+			background-color: #fff;
+		}
+		.btn-custom {
+			background-color: #343a40;
+			color: white;
+		}
+		.action-links a {
+			margin-right: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="card-header text-center">
+				<h2>Управление продуктами</h2>
+			</div>
+			<div class="card-body">
+				<a href="{% url 'goods:product_create' %}" class="btn btn-custom mb-4">Создать</a>
+				{% for product in products %}
+				<div class="d-flex justify-content-between align-items-center mb-3 p-2 border rounded">
+					<span>{{product.name}} , колличество - {{product.quantity}}</span>
+					<div class="action-links">
+						<a href="{% url 'goods:product_edit' product.id %}" class="btn btn-primary btn-sm">Редактировать</a>
+						<a href="{% url 'goods:product_delete' product.id %}" class="btn btn-danger btn-sm">Удалить</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 
-{% for product in products %}
-<p>{{product.name}}:  <a href="{% url 'goods:product_edit' product.id %}">edit</a> | <a href="{% url 'goods:product_delete' product.id %}">delete</a></p>
-{% endfor %}
+	<!-- Подключение Bootstrap JS и зависимостей -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,54 +1,109 @@
-<form method="POST">
-{% csrf_token %}
-<ul class="errorlist"><li>Обязательное поле.</li></ul>
-  <p>
-    <label for="id_name">Название:</label>
-    <input type="text" name="name" maxlength="150" required="" id="id_name" value="{{product.name}}">
-    
-  </p>
-  <p>
-    <label for="id_slug">URL:</label>
-    <input type="text" name="slug" maxlength="200" id="id_slug" value="{{product.slug}}">
-  </p>
-  <p>
-    <label for="id_description">Описание:</label>
-    <textarea name="description" cols="40" rows="10" id="id_description">{{product.description}}</textarea>
-  </p>
-  <p>
-    <label for="id_image">Изображение:</label>
-    <input type="file" name="image" accept="image/*" id="id_image" value="{{product.image}}">
-  </p>
-  <ul class="errorlist"><li>Обязательное поле.</li></ul>
-  <p>
-    <label for="id_price">Цена:</label>
-    <input type="number" name="price" step="0.01" required="" id="id_price" value="{{product.price}}">
-  </p>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin Form</title>
+	<!-- Подключение Bootstrap CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+		.container {
+			background-color: white;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			max-width: 600px;
+			margin: 50px auto;
+		}
+		.form-group label {
+			font-weight: bold;
+		}
+		.errorlist {
+			color: red;
+			list-style-type: none;
+			padding-left: 0;
+		}
+		.btn-custom {
+			background-color: #343a40;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2 class="text-center mb-4">Product</h2>
+		<form method="POST">
+			{% csrf_token %}
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_name">Название:</label>
+				<input type="text" name="name" maxlength="150" required="" id="id_name" class="form-control" value="{{product.name}}">
+			</div>
+			
+			<div class="form-group">
+				<label for="id_slug">URL:</label>
+				<input type="text" name="slug" maxlength="200" id="id_slug" class="form-control" value="{{product.slug}}">
+			</div>
+			
+			<div class="form-group">
+				<label for="id_description">Описание:</label>
+				<textarea name="description" cols="40" rows="10" id="id_description" class="form-control">{{product.description}}</textarea>
+			</div>
+			
+			<div class="form-group">
+				<label for="id_image">Изображение:</label>
+				<input type="file" name="image" accept="image/*" id="id_image" class="form-control" value="{{product.image}}">
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_price">Цена:</label>
+				<input type="number" name="price" step="0.01" required="" id="id_price" class="form-control" value="{{product.price}}">
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_discount">Скидка в %:</label>
+				<input type="number" name="discount" step="0.01" required="" id="id_discount" class="form-control" value="{{product.discount}}">
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_quantity">Количество:</label>
+				<input type="number" name="quantity" min="0" required="" id="id_quantity" class="form-control" value="{{product.quantity}}">
+			</div>
+			
+			<ul class="errorlist"><li>Обязательное поле.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_category">Категория:</label>
+				<select name="category" required="" id="id_category" class="form-control">
+					<option value="" selected="">---------</option>
+					{% for categ in categories %}
+					{% if categ.id == product.category.id %}
+					<option value="{{categ.id}}" selected>{{categ.name}}</option>
+					{% else %}
+					<option value="{{categ.id}}">{{categ.name}}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+			
+			<button type="submit" class="btn btn-custom btn-block">Отправить</button>
+		</form>
+	</div>
 
-  <ul class="errorlist"><li>Обязательное поле.</li></ul>
-  <p>
-    <label for="id_discount">Скидка в %:</label>
-    <input type="number" name="discount" step="0.01" required="" id="id_discount" value="{{product.discount}}">
-  </p>
-
-  <ul class="errorlist"><li>Обязательное поле.</li></ul>
-  <p>
-    <label for="id_quantity">Количество:</label>
-    <input type="number" name="quantity" min="0" required="" id="id_quantity" value="{{product.quantity}}">
-  </p>
-  <ul class="errorlist"><li>Обязательное поле.</li></ul>
-  <p>
-    <label for="id_category">Категория:</label>
-    <select name="category" required="" id="id_category">
-  <option value="" selected="">---------</option>
-  {% for categ in categories %}
-  {% if categ.id == product.category.id %}
-  <option value="{{categ.id}}" selected>{{categ.name}}</option>
-  {% else %}
-  <option value="{{categ.id}}">{{categ.name}}</option>
-  {% endif %}
-  {% endfor %}
-</select>
-<button type="submit" class="button">send</button>
-    
-  </p>
-</form>
+	<!-- Подключение Bootstrap JS и зависимостей -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

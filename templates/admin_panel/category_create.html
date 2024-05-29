@@ -1,13 +1,62 @@
-<form method="POST">
-{% csrf_token %}
-<ul class="errorlist"><li>This field is required.</li></ul>
-  <p>
-    <label for="id_name">Название:</label>
-    <input type="text" name="name" maxlength="150" required="" id="id_name" value="{{category.name}}">
-  </p>
-  <p>
-    <label for="id_slug">URL:</label>
-    <input type="text" name="slug" maxlength="200" id="id_slug" value="{{category.slug}}">
-  </p>
-<button type="submit" class="button">send</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin Form</title>
+	<!-- Подключение Bootstrap CSS -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+		.container {
+			background-color: white;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			max-width: 600px;
+			margin: 50px auto;
+		}
+		.form-group label {
+			font-weight: bold;
+		}
+		.errorlist {
+			color: red;
+			list-style-type: none;
+			padding-left: 0;
+		}
+		.btn-custom {
+			background-color: #343a40;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h2 class="text-center mb-4">Category</h2>
+		<form method="POST">
+			{% csrf_token %}
+			
+			<ul class="errorlist"><li>This field is required.</li></ul>
+			
+			<div class="form-group">
+				<label for="id_name">Название:</label>
+				<input type="text" name="name" maxlength="150" required="" id="id_name" class="form-control" value="{{category.name}}">
+			</div>
+			
+			<div class="form-group">
+				<label for="id_slug">URL:</label>
+				<input type="text" name="slug" maxlength="200" id="id_slug" class="form-control" value="{{category.slug}}">
+			</div>
+			
+			<button type="submit" class="btn btn-custom btn-block">Отправить</button>
+		</form>
+	</div>
+
+	<!-- Подключение Bootstrap JS и зависимостей -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
