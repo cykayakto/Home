@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.forms import ValidationError
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import user_passes_test
 
 from carts.models import Cart
 
@@ -15,6 +16,11 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
+
+
+def check_admin(user):
+   return user.is_superuser
+
 
 @login_required
 def create_order(request):
@@ -82,7 +88,7 @@ def create_order(request):
 
 
 
-
+@user_passes_test(check_admin)
 def order_item_create(request):
     form = OrderItemModelForm(request.POST)
     orders = Order.objects.all()
@@ -92,7 +98,7 @@ def order_item_create(request):
         return redirect("/admin_panel")
     return render(request, 'admin_panel/order_item_create.html', {"products": products, "orders": orders})
 
-
+@user_passes_test(check_admin)
 def main_order_item(request):
     order_items = OrderItem.objects.all()
     return render(request, 'admin_panel/main_order_item.html', {"order_items": order_items})
@@ -104,6 +110,7 @@ def order_item_delete(request, id):
     return redirect("/orders/order_item_main/")
 
 
+@user_passes_test(check_admin)
 def order_item_edit(request, id):
     instance = OrderItem.objects.get(id=id)
     orders = Order.objects.all()
@@ -117,12 +124,7 @@ def order_item_edit(request, id):
 
     return render(request, 'admin_panel/order_item_create.html', {"order_item": instance, "products": products, "orders": orders})
 
-
-
-
-
-
-
+@user_passes_test(check_admin)
 def order_create(request):
     form = OrderModelForm(request.POST)
     users = User.objects.all()
@@ -132,7 +134,7 @@ def order_create(request):
         return redirect("/admin_panel")
     return render(request, 'admin_panel/order_create.html', {"users": users, "form": form})
 
-
+@user_passes_test(check_admin)
 def main_order(request):
     orders = Order.objects.all()
     return render(request, 'admin_panel/main_order.html', {"orders": orders})
@@ -144,6 +146,7 @@ def order_delete(request, id):
     return redirect("/orders/order_main/")
 
 
+@user_passes_test(check_admin)
 def order_edit(request, id):
     instance = Order.objects.get(id=id)
     users = User.objects.all()

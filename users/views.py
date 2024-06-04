@@ -6,10 +6,16 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from carts.models import Cart
 from orders.models import Order, OrderItem
+from django.contrib.auth.decorators import user_passes_test
 from .models import User
 
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm, UserModelForm
 from django.utils.timezone import now
+
+
+def check_admin(user):
+   return user.is_superuser
+
 
 def login(request):
     if request.method == 'POST':
@@ -104,10 +110,7 @@ def logout(request):
     return redirect(reverse('main:index'))
 
 
-
-
-
-
+@user_passes_test(check_admin)
 def user_create(request):
     form = UserModelForm(request.POST)
     users = User.objects.all()
@@ -120,18 +123,18 @@ def user_create(request):
         return redirect("/admin_panel")
     return render(request, 'admin_panel/user_create.html', {"date": date, "form": form})
 
-
+@user_passes_test(check_admin)
 def main_user(request):
     users = User.objects.all()
     return render(request, 'admin_panel/main_user.html', {"users": users})
 
-
+@user_passes_test(check_admin)
 def user_delete(request, id):
     instance = User.objects.get(id=id)
     instance.delete()
     return redirect("/user/user_main/")
 
-
+@user_passes_test(check_admin)
 def user_edit(request, id):
     instance = User.objects.get(id=id)
     users = User.objects.all()

@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from users.models import User
 
 
 class Categories(models.Model):
@@ -48,3 +49,22 @@ class Products(models.Model):
             return round(self.price - self.price*self.discount/100, 2)
         
         return self.price
+    
+class FeedBack(models.Model):
+    product = models.ForeignKey(to=Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=150)
+    text = models.CharField(max_length=550)
+    rating = models.IntegerField()
+
+    class Meta:
+        db_table = 'feedback'
+        verbose_name = 'Отзывы'
+        verbose_name_plural = 'Отзывы'
+        ordering = ("id",)
+
+
+class PresonalDiscount(models.Model):
+    product = models.ForeignKey(to=Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    amount = models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')

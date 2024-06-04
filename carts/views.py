@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from carts.models import Cart
 from carts.utils import get_user_carts
+from django.contrib.auth.decorators import user_passes_test
 
 from goods.models import Products
 from .forms import CartModelForm
@@ -10,6 +11,10 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
+
+
+def check_admin(user):
+   return user.is_superuser
 
 
 def cart_add(request):
@@ -98,7 +103,7 @@ def cart_remove(request):
 
     return JsonResponse(response_data)
 
-
+@user_passes_test(check_admin)
 def cart_create(request):
     form = CartModelForm(request.POST)
     goods = Products.objects.all()
@@ -108,7 +113,7 @@ def cart_create(request):
         return redirect("/admin_panel")
     return render(request, 'admin_panel/cart_create.html', {"goods": goods, "users": users})
 
-
+@user_passes_test(check_admin)
 def main_cart(request):
     carts = Cart.objects.all()
     return render(request, 'admin_panel/main_cart.html', {"carts": carts})
@@ -120,6 +125,7 @@ def cart_delete(request, id):
     return redirect("/cart/cart_main/")
 
 
+@user_passes_test(check_admin)
 def cart_edit(request, id):
     instance = Cart.objects.get(id=id)
     goods = Products.objects.all()
